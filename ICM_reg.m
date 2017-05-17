@@ -1,15 +1,21 @@
 clc
 clear
 close all
-moving_img = double(imread('modtest1.png'));
-fixed_img = double(imread('modtest3.png'));
+moving_img = double(randi(9,10,10));
+fixed_img = double(randi(9,10,10));
 label_num = 3;
 maxiter = 60;
 sigma= 0.5;
 range=2; % 5*5 search space
-%-------------随机初始化标签----------------
-label_m = randi([1,label_num],size(moving_img));
-label_f = randi([1,label_num],size(fixed_img));
+%-------------初始化标签----------------
+label_m =2*ones(size(moving_img));
+label_f =2*ones(size(fixed_img));
+
+label_m(moving_img<=3)=1;
+label_m(moving_img>6)=3;
+label_f(fixed_img<=3)=1;
+label_f(fixed_img>6)=3;
+
 
 label=label_m;
 displace=1:numel(label);
@@ -42,6 +48,7 @@ for ind=1:numel(label)
    end
    
 end
+
  figure,
  subplot(1,2,1);
  imshow(reshape(label(displace),size(label_m)),[]);
@@ -49,8 +56,15 @@ end
  subplot(1,2,2);
  imshow(label_f,[]);
  title('label_f')
+ 
 
-
+ figure,
+ subplot(1,2,1);
+ imshow(reshape(moving_img(displace),size(label_m)),[]);
+ title('moving_img');
+ subplot(1,2,2);
+ imshow(fixed_img,[]);
+ title('fixed_img')
 
 
 %原始网格
@@ -72,14 +86,18 @@ set(gca,'ytick',[]);
 figure,
 
 [r_m,c_m]=ind2sub(size(moving_img),displace);
-r_e=r_m-repmat(r,1,numel(c));
-c_e=c_m-(reshape(repmat(c,numel(r),1),1,numel(c)*numel(r)));
+r_e=repmat(r,1,numel(c))-r_m;
+c_e=(reshape(repmat(c,numel(r),1),1,numel(c)*numel(r)))-c_m;
 r_e=reshape(r_e,size(moving_img));
 c_e=reshape(c_e,size(moving_img));
+r_e(1,:)=0;
+c_e(1,:)=0;
+r_e(:,1)=0;
+c_e(:,1)=0;
 for i=1:size(r,2)
     plot(repmat(r(i),1,numel(c))+(r_e(:,i))',c,'color',co(i,:));
     plot(r,repmat(c(i),1,numel(r))+(c_e(:,i))','color',co(i,:));
-   
+%     pause(5);
     hold on 
 end
 set(gca,'xtick',[]);
