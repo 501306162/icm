@@ -1,9 +1,9 @@
 clc
 clear
 close all
-moving_img = double(randi(10,10,10));
-fixed_img = double(randi(10,10,10));
-label_num = 10;
+moving_img = double(imread('modtest1.png'));
+fixed_img = double(imread('modtest3.png'));
+label_num = 3;
 maxiter = 60;
 sigma= 0.5;
 range=2; % 5*5 search space
@@ -50,25 +50,58 @@ end
  imshow(label_f,[]);
  title('label_f')
 
+
+
+
+%原始网格
 figure,
-[r,c]=ind2sub(label_f,(1:numel(label_f))');
-[r_m,c_m]=ind2sub(label_f,displace(:));
-r_e=r_m-r;
-c_e=c_m-c;
-x=r;
-y=c;
-[y,p1]=sort(y);
-[x,p2]=sort(x);
-r_e=r_e(p2);
-c_e=c_e(p1);
-co = rand(size(x,1)*size(y,1),3); 
-for i=1:size(x,1)
-    plot(repmat(x(i),1,size(y,1))+r_e',sort(y),'color',co(i,:));
-    plot(sort(x),repmat(y(i),1,size(x,1))+c_e','color',co(i,:));
+r=1:size(moving_img,1);
+c=1:size(moving_img,2);
+co = rand(size(r,2)*size(c,2),3); 
+for i=1:size(r,2)
+    plot(repmat(r(i),1,numel(c)),c,'color',co(i,:));
+    plot(r,repmat(c(i),1,numel(r)),'color',co(i,:));
     hold on 
 end
 set(gca,'xtick',[]);
 set(gca,'ytick',[]);
+
+
+%变形网格
+%变形以后网格点行列坐标
+figure,
+
+[r_m,c_m]=ind2sub(size(moving_img),displace);
+r_e=r_m-repmat(r,1,numel(c));
+c_e=c_m-(reshape(repmat(c,numel(r),1),1,numel(c)*numel(r)));
+r_e=reshape(r_e,size(moving_img));
+c_e=reshape(c_e,size(moving_img));
+for i=1:size(r,2)
+    plot(repmat(r(i),1,numel(c))+(r_e(:,i))',c,'color',co(i,:));
+    plot(r,repmat(c(i),1,numel(r))+(c_e(:,i))','color',co(i,:));
+   
+    hold on 
+end
+set(gca,'xtick',[]);
+set(gca,'ytick',[]);
+
+   
+
+% r_e=r_m-r;
+% c_e=c_m-c;
+% 
+% [y,p1]=sort(y);
+% [x,p2]=sort(x);
+% r_e=r_e(p2);
+% c_e=c_e(p1);
+% figure,
+% for i=1:size(x,1)
+%     plot(repmat(x(i),1,size(y,1))+r_e',sort(y),'color',co(i,:));
+%     plot(sort(x),repmat(y(i),1,size(x,1))+c_e','color',co(i,:));
+%     hold on 
+% end
+% set(gca,'xtick',[]);
+% set(gca,'ytick',[]);
 % 
 % figure(3),
 % [r,c]=ind2sub(label_f,(1:numel(label_f))');
