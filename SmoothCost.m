@@ -15,3 +15,5 @@ function cost = TAD(moving_label,ind,neighbors_ind,clique2)
     end
     
 end
+%½Ø¶Ïº¯Êý
+cost=min((ind-neighbor).^2,alpha);

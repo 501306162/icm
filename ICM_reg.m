@@ -36,7 +36,7 @@ while iter < maxiter
         neigh_k=neighborhood(dis_ind(k),label_m,8);
         label_neigh=label(neigh_k);
         %计算搜索位置的能量
-        smooth(k)=sum(~(~(label_neigh-label_dis)));
+        smooth(k)=sum(~(~(label_neigh-label_dis)));  %标签不同的值的个数
         data(k)=((label_f(ind)-label_dis).^2)/sigma;
     end
     E=data+smooth;

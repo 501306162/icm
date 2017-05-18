@@ -33,4 +33,4 @@ close all
 % imshow(J)
 % 
 % imregdemons
-line([0 1],[0 1])
+    U_n=MLL((1:4),0.5,(1:4),beta);
