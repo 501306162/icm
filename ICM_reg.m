@@ -6,8 +6,8 @@ fixed_img = double(randi(9,10,10));
 label_num = 3;
 maxiter = 60;
 sigma= 0.5;
-range=1; % 5*5 search space
-%-------------³õÊ¼»¯±êÇ©----------------
+range=1; % 3*3 search space
+%-------------åˆå§‹åŒ–æ ‡ç­¾----------------
 label_m =2*ones(size(moving_img));
 label_f =2*ones(size(fixed_img));
 
@@ -25,22 +25,22 @@ for ind=1:numel(label)
    label_i=label(ind);
    iter = 0;
    while iter < maxiter    
-    %È·¶¨ËÑË÷·¶Î§
+    %ç¡®å®šæœç´¢èŒƒå›´
     dis_ind=displacement2d(d,label_m,range);
-    %Ã¿¸öËÑË÷Î»ÖÃ¶ÔÓ¦ÄÜÁ¿,ÕÒµ½×îĞ¡ÄÜÁ¿Î»ÖÃ
+    %æ¯ä¸ªæœç´¢ä½ç½®å¯¹åº”èƒ½é‡,æ‰¾åˆ°æœ€å°èƒ½é‡ä½ç½®
     smooth=zeros(1,length(dis_ind));
     data=zeros(1,length(dis_ind));
     for k=1:numel(dis_ind)       
         label_dis=label(dis_ind(k));
-        %Ã¿¸öËÑË÷Î»ÖÃ¶ÔÓ¦ÁÚÓò
+        %æ¯ä¸ªæœç´¢ä½ç½®å¯¹åº”é‚»åŸŸ
         neigh_k=neighborhood(dis_ind(k),label_m,8);
         label_neigh=label(neigh_k);
-        %¼ÆËãËÑË÷Î»ÖÃµÄÄÜÁ¿
+        %è®¡ç®—æœç´¢ä½ç½®çš„èƒ½é‡
         smooth(k)=sum(~(~(label_neigh-label_dis)));
         data(k)=((label_f(ind)-label_dis).^2)/sigma;
     end
     E=data+smooth;
-    %ÕÒµ½×îĞ¡ÄÜÁ¿¶ÔÓ¦µÄÎ»ÖÃ¼°Ê¹ÓÃ±êÇ©,×÷ÎªÏÂÒ»´Îµü´úÊ¹ÓÃ±êÇ©&Î»ÖÃ
+    %æ‰¾åˆ°æœ€å°èƒ½é‡å¯¹åº”çš„ä½ç½®åŠä½¿ç”¨æ ‡ç­¾,ä½œä¸ºä¸‹ä¸€æ¬¡è¿­ä»£ä½¿ç”¨æ ‡ç­¾&ä½ç½®
     [E_min,k_new]=min(E);
     displace(ind)=dis_ind(k_new);
     d=dis_ind(k_new);
@@ -67,7 +67,7 @@ end
  title('fixed_img')
 
 
-%Ô­Ê¼Íø¸ñ
+%åŸå§‹ç½‘æ ¼
 figure,
 r=1:size(moving_img,1);
 c=1:size(moving_img,2);
@@ -81,8 +81,8 @@ set(gca,'xtick',[]);
 set(gca,'ytick',[]);
 
 
-%±äĞÎÍø¸ñ
-%±äĞÎÒÔºóÍø¸ñµãĞĞÁĞ×ø±ê
+%å˜å½¢ç½‘æ ¼
+%å˜å½¢ä»¥åç½‘æ ¼ç‚¹è¡Œåˆ—åæ ‡
 figure,
 [r_f,c_f]=ind2sub(size(moving_img),1:numel(moving_img));
 [r_m,c_m]=ind2sub(size(moving_img),displace);
@@ -100,7 +100,7 @@ end
 set(gca,'xtick',[]);
 set(gca,'ytick',[]);
 
-% %·¨¶ş :
+% %æ³•äºŒ :
 % z=zeros(size(moving_img));
 % figure,
 % mesh(reshape(r_f,size(moving_img))+r_e,reshape(c_f,size(moving_img))+c_e,z)
