@@ -21,9 +21,9 @@ function U=MLL(ind,alpha,ind_n,beta,label)
     V2(abs(ind_e)==1)=beta(2);
     V2(abs(ind_e)==(m-1))=beta(3);
     V2(abs(ind_e)==(m+1))=beta(4);
-%     1: same
-%    -1: differ
-    w=~(label(ind_n)-label(ind))-~(~(label(ind_n)-label(ind)));
+%    -1: same
+%    1: differ
+    w=~(~(label(ind_n)-label(ind)))-~(label(ind_n)-label(ind));
     V2=w.*V2;
     U=V1+sum(V2);
 end
