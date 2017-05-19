@@ -13,7 +13,7 @@ function U=MLL(ind,alpha,ind_n,beta,label)
 %     w=~(l_n-l_ind)-~(~(l_n-l_ind)); 
 %     V2=beta.*w;
     [m,n]=size(label);
-    V2=zeros(1,numel(ind_n));
+    V2=zeros(numel(ind_n),1);
     % -- |   /  \
     % 1  2   3  4
     ind_e=ind_n-ind;
